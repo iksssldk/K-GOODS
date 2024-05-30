@@ -4,11 +4,11 @@ if (!defined('DB_SERVER')) {
 }
 
 if (!defined('DB_USER')) {
-    define('DB_USER','root');
+    define('DB_USER','jekaterina');
 }
 
 if (!defined('DB_PASS')) {
-    define('DB_PASS' ,'');
+    define('DB_PASS' ,'Kateika2004))');
 }
 
 if (!defined('DB_NAME')) {
