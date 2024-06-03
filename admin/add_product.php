@@ -4,9 +4,19 @@
 
 include('../server/connection.php');
 
-if(!isset($_SESSION['admin_logged_in'])){
-    header('location: login.php');
+if(!isset($_SESSION['logged_in'])){
+    header('location: ../login.php');
     exit;
+}
+
+// Fetch categories from database
+$categories = [];
+$stmt = $conn->prepare("SELECT category_id, category_name FROM categories");
+if ($stmt->execute()) {
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row;
+    }
 }
 
 if(isset($_POST['create_product'])){
@@ -14,7 +24,7 @@ if(isset($_POST['create_product'])){
     $product_description = $_POST['description'];
     $product_price = $_POST['price'];
     $product_color = $_POST['color'];
-    $product_category = $_POST['category'];
+    $category_id = $_POST['category'];
 
     $image = $_FILES['image']['tmp_name'];
     $unique_id = uniqid();
@@ -24,9 +34,9 @@ if(isset($_POST['create_product'])){
     move_uploaded_file($image,"../assets/imgs/".$image_name);
 
     //pievienot jaunu preci
-    $stmt = $conn->prepare("INSERT INTO products (product_name, product_description, product_price, product_color, product_category, product_image)
+    $stmt = $conn->prepare("INSERT INTO products (category_id, product_name, product_description, product_price, product_color, product_category, product_image)
                             VALUES (?,?,?,?,?,?) ");
-    $stmt->bind_param('ssssss', $product_name, $product_description, $product_price, $product_color, $product_category, $image_name);
+    $stmt->bind_param('issssss', $category_id, $product_name, $product_description, $product_price, $product_color, $product_category, $image_name);
     
     if($stmt->execute()){
 
@@ -68,16 +78,11 @@ if(isset($_POST['create_product'])){
                             <div class="form-group mt-2">
                                 <label>Kategorija</label>
                                 <select class="form-select" name="category" required>
-                                    <option value="Uzstāšanās kostīmi">Uzstāšanās kostīmi</option>
-                                    <option value="T-krekli">T-krekli</option>
-                                    <option value="Bikses">Bikses</option>
-                                    <option value="Apavi">Apavi</option>
-                                    <option value="Zobeni">Zobeni</option>
-                                    <option value="Šķēpi">Šķēpi</option>
-                                    <option value="Eksotiskie ieroči">Eksotiskie ieroči</option>
-                                    <option value="Paklāji">Paklāji</option>
-                                    <option value="Dekorācijas">Dekorācijas</option>
-                                    <option value="Papilds">Papilds</option>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?php echo $category['category_id']; ?>">
+                                        <?php echo htmlspecialchars($category['category_name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group mt-2">

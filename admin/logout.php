@@ -3,11 +3,11 @@
 session_start();
 
 if (isset($_GET['logout'])){
-    if(isset($_SESSION['admin_logged_in'])){
-        unset($_SESSION['admin_logged_in']);
-        unset($_SESSION['admin_email']);
-        unset($_SESSION['admin_name']);
-        header('location: login.php');
+    if(isset($_SESSION['logged_in'])){
+        unset($_SESSION['logged_in']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_name']);
+        header('location: ../login.php');
         exit;
     }
 }

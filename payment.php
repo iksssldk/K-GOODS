@@ -69,8 +69,11 @@ if(isset($_POST['order_pay_btn'])){
                         var transaction = orderData.purchase_units[0].payments.captures[0];
                         alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
                         // Здесь вы можете выполнить какие-либо дополнительные действия после успешной транзакции
+                        var transactionId = transaction.id;
+                        var transactionAmount = transaction.amount.value;
+                        var transactionDate = transaction.create_time;
 
-                        window.location.href = "server/complete_payment.php?transaction_id=" + transaction.id + "&order_id=<?php echo $order_id; ?>";
+                        window.location.href = "server/complete_payment.php?transaction_id=" + transaction.id + "&order_id=<?php echo $order_id; ?>" + "&transaction_amount=" + transactionAmount + "&transaction_date=" + transactionDate;
                     });
                 }
             }).render('#paypal-button-container');
