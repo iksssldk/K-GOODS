@@ -4,8 +4,8 @@ session_start();
 
 include('../server/connection.php');
 
-if(!isset($_SESSION['admin_logged_in'])){
-    header('location: login.php');
+if(!isset($_SESSION['logged_in'])){
+    header('location: ../login.php');
     exit;
 }
 

@@ -4,8 +4,8 @@
 
 include('../server/connection.php');
 
-if(!isset($_SESSION['admin_logged_in'])){
-    header('location: login.php');
+if(!isset($_SESSION['logged_in'])){
+    header('location: ../login.php');
     exit;
 }
 
@@ -21,7 +21,7 @@ if(isset($_GET['page_no']) && $_GET['page_no'] != ""){
 }
 
 //2. preces atgriešanas numurs
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_records FROM products");
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_records FROM products ");
 $stmt->execute();
 $stmt->bind_result($total_records);
 $stmt->store_result();
@@ -41,7 +41,10 @@ $total_no_of_pages = ceil($total_records / $total_records_per_page);
 
 //4. saņemt visas preces
 
-$stmt1 = $conn->prepare("SELECT * FROM products LIMIT $offset, $total_records_per_page");
+$stmt1 = $conn->prepare("SELECT p.*, c.category_name
+                       FROM products p 
+                       JOIN categories c ON p.category_id = c.category_id 
+                       LIMIT $offset, $total_records_per_page");
 $stmt1->execute();
 $products = $stmt1->get_result();
 
@@ -109,7 +112,7 @@ $products = $stmt1->get_result();
                             <td><img src="<?php echo "../assets/imgs/".$product['product_image']; ?>" style="width: 70px;"></td>
                             <td><?php echo $product['product_name']; ?></td>
                             <td><?php echo $product['product_price']."€"; ?></td>
-                            <td><?php echo $product['product_category']; ?></td>
+                            <td><?php echo $product['category_name']; ?></td>
                             <td><?php echo $product['product_color']; ?></td>
                             <td><?php echo $product['product_description']; ?></td>
                             <td><?php echo $product['availability']; ?></td>

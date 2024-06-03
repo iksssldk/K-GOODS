@@ -13,14 +13,14 @@ if(isset($_POST['login_btn'])){
   $email = $_POST['email'];
   $password = md5($_POST['password']);
 
-  $stmt = $conn->prepare("SELECT user_id, user_name, user_surname, user_email, user_password FROM users 
+  $stmt = $conn->prepare("SELECT user_id, user_name, user_surname, user_email, user_password, user_status FROM users 
                           WHERE user_email = ? AND user_password = ?
                           LIMIT 1");
 
   $stmt->bind_param('ss', $email, $password);
 
   if($stmt->execute()){
-    $stmt->bind_result($user_id, $user_name, $user_surname, $user_email, $user_password);
+    $stmt->bind_result($user_id, $user_name, $user_surname, $user_email, $user_password, $user_status);
     $stmt->store_result();
 
     if($stmt->num_rows() == 1){
@@ -30,9 +30,15 @@ if(isset($_POST['login_btn'])){
       $_SESSION['user_name'] = $user_name;
       $_SESSION['user_surname'] = $user_surname;
       $_SESSION['user_email'] = $user_email;
+      $_SESSION['user_status'] = $user_status;
       $_SESSION['logged_in'] = true;
 
-      header('location: account.php?login_success=Veiksmīgi pieteikties!');
+      if ($user_status === 'admin') {
+          header('location: admin/index.php');
+      } else {
+          header('location: account.php?login_success=Veiksmīgi pieteikties!');
+      }
+      exit;
 
     }else {
 

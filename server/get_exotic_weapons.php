@@ -10,7 +10,9 @@ if(isset($_GET['page_no']) && $_GET['page_no'] != "") {
 }
 
 // 2. Preces atgriešanas numurs
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_records FROM products WHERE product_category = 'Eksotiskie ieroči'");
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_records FROM products AS p
+                        INNER JOIN categories AS c ON p.category_id = c.category_id 
+                        WHERE c.category_name = 'Eksotiskie ieroči'");
 $stmt->execute();
 $stmt->bind_result($total_records);
 $stmt->store_result();
@@ -29,7 +31,9 @@ $adjacents = "2";
 $total_no_of_pages = ceil($total_records / $total_records_per_page);
 
 // 4. Saņemt visas preces ar limitu un офсетом
-$stmt1 = $conn->prepare("SELECT * FROM products WHERE product_category = 'Eksotiskie ieroči' LIMIT ?, ?");
+$stmt1 = $conn->prepare("SELECT * FROM products AS p
+                        INNER JOIN categories AS c ON p.category_id = c.category_id 
+                        WHERE c.category_name = 'Eksotiskie ieroči' LIMIT ?, ?");
 $stmt1->bind_param("ii", $offset, $total_records_per_page);
 $stmt1->execute();
 $exotic_weapons_products = $stmt1->get_result();

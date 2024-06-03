@@ -71,6 +71,7 @@ if (isset($_SESSION['logged_in'])){
         <p style="color: green;" class="text-center"><?php if(isset($_GET['login_success'])){ echo $_GET['login_success']; }?></p>
         <p style="color: green;" class="text-center"><?php if(isset($_GET['payment_success'])){ echo $_GET['payment_success']; }?></p>
         <p style="color: red;" class="text-center"><?php if(isset($_GET['deleted_failure'])){ echo $_GET['deleted_failure']; }?></p>
+        <p style="color: red;" class="text-center"><?php if(isset($_GET['transaction_failure'])){ echo $_GET['transaction_failure']; }?></p>
         <section class="my-5 py-5">
             <div class="row container mx-auto">
                 <div class="text-center col-lg-6 col-md-12 col-sm-12">

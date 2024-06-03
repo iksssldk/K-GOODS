@@ -2,8 +2,8 @@
 
 <?php
 
-if(!isset($_SESSION['admin_logged_in'])){
-    header('location: login.php');
+if(!isset($_SESSION['logged_in'])){
+    header('location: ../login.php');
     exit;
 }
 ?>
@@ -24,9 +24,9 @@ if(!isset($_SESSION['admin_logged_in'])){
             </div>
             
             <div class="container">
-                <p>ID: <?php echo $_SESSION['admin_id']; ?></p>
-                <p>Vārds: <?php echo $_SESSION['admin_name']; ?></p>
-                <p>E-pasts: <?php echo $_SESSION['admin_email']; ?></p>
+                <p>ID: <?php echo $_SESSION['user_id']; ?></p>
+                <p>Vārds: <?php echo $_SESSION['user_name']; ?></p>
+                <p>E-pasts: <?php echo $_SESSION['user_email']; ?></p>
             </div>
 
             <?php if(isset($_GET['order_failed'])) { ?>
