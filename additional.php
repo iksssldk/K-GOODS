@@ -4,7 +4,7 @@
       <main>
         <section id="index" class="mt-2 py-5">
             <div class="title">
-                <h3>Papildu</h3>
+                <h3>Papilds</h3>
                 <hr class="mx-auto">
             </div>
 
