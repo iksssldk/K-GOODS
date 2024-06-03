@@ -51,7 +51,7 @@ if(isset($_POST['register'])){
 
             //Ja konts ir izveidots veiksmīgi
             if($stmt->execute()){
-                $user_id = $stmt->$insert_id;
+                $user_id = $stmt->insert_id;
                 $_SESSION['user_id'] = $user_id;
                 $_SESSION['user_name'] = $name;
                 $_SESSION['user_surname'] = $surname;
